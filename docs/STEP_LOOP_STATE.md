@@ -1,57 +1,42 @@
 # Step Loop State
 
 ## Current phase
-
-Phase 04 — Menu (granular)
+Phase 06 — Orders
 
 ## Current step number
-
-04.11
+06.01
 
 ## Current step title
-
-Add/verify variant selection
+Verify order history list
 
 ## Current step-loop number
-
 1
 
 ## Exact requirement
-
-Product detail page must allow selecting size/variant before adding to cart; selection must persist on the cart line.
+Orders page lists placed orders with status after checkout.
 
 ## Existing implementation
-
-- `app/menu/[id]/page.tsx` + `components/pages/ProductDetailPage.tsx` with variant radio buttons
-- Variant stored on `CartLine.variant`
-- Playwright test `product detail page supports customization` passes
+- `components/pages/OrdersPage.tsx`
+- Playwright: `orders page shows placed order after checkout` — passed mobile + desktop
 
 ## Defects discovered
-
-- None for variant selection on food products with variants
+- None
 
 ## Files being changed
-
-- `components/pages/ProductDetailPage.tsx` (verified)
-- `tests/playwright/workflows.spec.ts`
+- `tests/playwright/operations.spec.ts`
 
 ## Tests required
-
-- `npx playwright test tests/playwright/workflows.spec.ts`
-- Unit tests for cart line with variant
+- `npx playwright test tests/playwright/operations.spec.ts`
+- `npx playwright test --project=chromium-desktop`
 
 ## Viewports required
-
-- 390 × 844 (verified via Playwright mobile project)
+- 390 × 844, 1440 × 900 (both verified — 14/14 Playwright tests pass)
 
 ## Roles required
-
-- guest_golfer
+- guest_golfer, kitchen_employee, platform_admin
 
 ## Current status
-
 TESTING
 
 ## Next action
-
-Verify variant appears on checkout line display, then mark 04.11 VERIFIED and continue 04.12.
+Verify fulfilment status display (06.02), advance fulfilment (06.04), alcohol refusal (06.05).
