@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppData } from "@/lib/hooks/useAppData";
+import { managerReassign } from "@/lib/core/assignment";
 import { formatMoney } from "@/lib/utils";
 
 export function ManagerPage() {
@@ -31,6 +32,16 @@ export function ManagerPage() {
     );
     await save({ ...data, products });
   };
+
+  const reassignFulfilment = async (fulfilmentId: string, staffId: string) => {
+    const snapshot = { ...data };
+    managerReassign(snapshot, fulfilmentId, staffId, "Manager reassignment");
+    await save(snapshot);
+  };
+
+  const activeFulfilments = data.fulfilments.filter(
+    (f) => !["completed", "cancelled"].includes(f.status),
+  );
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -101,7 +112,7 @@ export function ManagerPage() {
               </tr>
             </thead>
             <tbody>
-              {data.products.slice(0, 15).map((p) => (
+              {data.products.map((p) => (
                 <tr key={p.id} className="border-b border-fairway-50">
                   <td className="p-2">{p.name}</td>
                   <td className="p-2">
@@ -144,6 +155,45 @@ export function ManagerPage() {
             </tbody>
           </table>
         </div>
+      </article>
+
+      <article className="panel lg:col-span-2">
+        <h2 className="text-xl font-bold">Active fulfilment reassignment</h2>
+        {activeFulfilments.length === 0 ? (
+          <p className="mt-4 text-sm text-fairway-600">
+            No active fulfilments to reassign.
+          </p>
+        ) : (
+          <ul className="mt-4 space-y-3">
+            {activeFulfilments.map((f) => (
+              <li
+                key={f.id}
+                className="flex flex-wrap items-center gap-3 rounded-lg bg-fairway-50 p-3 text-sm"
+              >
+                <span className="font-bold">{f.id}</span>
+                <span>{f.type.replaceAll("_", " ")}</span>
+                <span className="text-fairway-600">{f.status}</span>
+                <select
+                  className="input-field w-auto"
+                  defaultValue={f.assignedStaffId ?? ""}
+                  onChange={(e) => void reassignFulfilment(f.id, e.target.value)}
+                  aria-label={`Reassign ${f.id}`}
+                >
+                  <option value="" disabled>
+                    Reassign to…
+                  </option>
+                  {data.staff
+                    .filter((s) => ["beverage_cart_staff", "runner"].includes(s.role))
+                    .map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name} ({s.role.replaceAll("_", " ")})
+                      </option>
+                    ))}
+                </select>
+              </li>
+            ))}
+          </ul>
+        )}
       </article>
 
       <article className="panel lg:col-span-2">

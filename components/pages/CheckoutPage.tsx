@@ -50,10 +50,11 @@ export function CheckoutPage() {
   };
 
   const checkout = async () => {
-    if (processing) return;
+    if (processing || data.checkoutInProgress) return;
     setProcessing(true);
     setError(null);
-    const snapshot = { ...data };
+    const snapshot = { ...data, checkoutInProgress: true };
+    await save(snapshot);
     const result = createOrderFromCart(
       snapshot,
       data.activeRole,
@@ -62,6 +63,8 @@ export function CheckoutPage() {
       alcoholConfirmed,
     );
     if (!result.ok) {
+      snapshot.checkoutInProgress = false;
+      await save(snapshot);
       setError(result.error ?? "Checkout failed");
       setProcessing(false);
       return;
@@ -103,13 +106,39 @@ export function CheckoutPage() {
                       <span>
                         {product.name} × {line.quantity}
                       </span>
-                      <button
-                        type="button"
-                        className="text-sm text-red-600"
-                        onClick={() => void removeLine(line.id)}
-                      >
-                        Remove
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="btn-secondary min-h-touch min-w-8 px-2 text-sm"
+                          onClick={() =>
+                            void updateLine(line.id, {
+                              quantity: Math.max(1, line.quantity - 1),
+                            })
+                          }
+                          aria-label={`Decrease ${product.name} quantity`}
+                        >
+                          −
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-secondary min-h-touch min-w-8 px-2 text-sm"
+                          onClick={() =>
+                            void updateLine(line.id, {
+                              quantity: Math.min(99, line.quantity + 1),
+                            })
+                          }
+                          aria-label={`Increase ${product.name} quantity`}
+                        >
+                          +
+                        </button>
+                        <button
+                          type="button"
+                          className="text-sm text-red-600"
+                          onClick={() => void removeLine(line.id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                     <div className="mt-2 grid gap-2 sm:grid-cols-2">
                       <label className="text-xs font-bold">
@@ -255,12 +284,15 @@ export function CheckoutPage() {
           onClick={() => void checkout()}
           disabled={
             processing ||
+            data.checkoutInProgress ||
             !data.settings.orderingOpen ||
             (hasAlcohol && !data.settings.alcoholOrderingOpen) ||
             (hasAlcohol && !alcoholConfirmed && data.activeRole !== "club_member")
           }
         >
-          {processing ? "Processing…" : "Place simulated order"}
+          {processing || data.checkoutInProgress
+            ? "Processing…"
+            : "Place simulated order"}
         </button>
       </article>
     </div>

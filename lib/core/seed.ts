@@ -443,5 +443,6 @@ export function createSeedData(): AppData {
     previousOrderIds: [],
     poorConnection: false,
     offline: false,
+    checkoutInProgress: false,
   };
 }

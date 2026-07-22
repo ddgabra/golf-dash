@@ -13,6 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/core.test.ts tests/orders.test.ts tests/e2e/workflows.test.ts",
     "test:e2e": "node --import tsx --test 'tests/e2e/**/*.test.ts'",
+    "test:browser": "playwright test",
+    "test:browser:smoke": "playwright test tests/playwright/smoke.spec.ts",
     "validate": "npm run format:check && npm run typecheck && npm run lint && npm run test && npm run test:e2e && npm run build"
   },
   "dependencies": {
@@ -21,6 +23,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

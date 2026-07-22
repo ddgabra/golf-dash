@@ -43,6 +43,7 @@ export const store = {
       if (!parsed.favouriteIds) parsed.favouriteIds = [];
       if (!parsed.previousOrderIds) parsed.previousOrderIds = [];
       if (!parsed.inventoryAdjustments) parsed.inventoryAdjustments = [];
+      if (parsed.checkoutInProgress === undefined) parsed.checkoutInProgress = false;
       return parsed;
     } catch {
       const seed = createSeedData();
