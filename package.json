@@ -9,6 +9,7 @@
     "lint": "node scripts/lint.mjs",
     "typecheck": "tsc --noEmit",
     "test": "npm run build && node --test tests/*.test.mjs",
-    "validate": "npm run format && npm run typecheck && npm run lint && npm run test"
+    "validate": "npm run format && npm run typecheck && npm run lint && npm run test",
+    "test:e2e": "npm run build && node --test tests/*.test.mjs"
   }
 }

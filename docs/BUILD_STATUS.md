@@ -1,3 +1,13 @@
 # Build Status
 
-Phase 01 is verified for its scoped repository-foundation gate. The repository now contains a dependency-free TypeScript static application, core order rules, a custom lint check, node:test unit tests, and required autonomous-loop documentation. `npm run validate` passed on 2026-07-22. Later phases are not complete.
+Last validation in this session passed:
+
+- `npm run format`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
+- `npm run test:e2e`
+- `npm run build`
+- `npm run validate`
+
+The app remains a database-free local prototype. It uses local storage, typed repositories, seeded data, browser BroadcastChannel/storage events, simulated payments, simulated location, simulated notifications, and simulated roles.
