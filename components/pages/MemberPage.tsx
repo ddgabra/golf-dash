@@ -1,14 +1,16 @@
 "use client";
 
+import { identities } from "@/lib/core/seed";
 import { useAppData } from "@/lib/hooks/useAppData";
 import { formatMoney } from "@/lib/utils";
-import { RouteGuard } from "@/components/ui";
 
 export function MemberPage() {
   const { data } = useAppData();
   if (!data) return null;
 
-  const member = data.members.find((m) => m.id === "member-olivia") ?? data.members[0];
+  const identity = identities.find((i) => i.role === data.activeRole);
+  const member =
+    data.members.find((m) => m.id === identity?.memberAccountId) ?? data.members[0];
   if (!member) return null;
 
   const remaining = Math.max(0, member.requirementCents - member.completedCents);
@@ -75,13 +77,5 @@ export function MemberPage() {
         )}
       </article>
     </div>
-  );
-}
-
-export function MemberPageGuarded() {
-  return (
-    <RouteGuard path="/member">
-      <MemberPage />
-    </RouteGuard>
   );
 }

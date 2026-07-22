@@ -378,6 +378,7 @@ export interface AppData {
   previousOrderIds: string[];
   poorConnection: boolean;
   offline: boolean;
+  checkoutInProgress: boolean;
 }
 
 export interface PricedOrder {

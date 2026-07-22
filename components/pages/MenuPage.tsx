@@ -126,7 +126,14 @@ export function MenuPage() {
                 {p.imageToken}
               </div>
               <div className="flex items-start justify-between gap-2">
-                <h3 className="font-bold text-fairway-900">{p.name}</h3>
+                <h3 className="font-bold text-fairway-900">
+                  <Link
+                    href={`/menu/${p.id}`}
+                    className="hover:text-fairway-700 hover:underline"
+                  >
+                    {p.name}
+                  </Link>
+                </h3>
                 <button
                   type="button"
                   className="text-xl"
@@ -160,7 +167,7 @@ export function MenuPage() {
                 {p.cartAvailable ? "Cart available" : "Clubhouse only"} • Variants:{" "}
                 {p.variants.join(", ")}
               </p>
-              <div className="mt-auto flex items-center justify-between gap-2">
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="font-black text-fairway-900">
                     {formatMoney(getUnitPrice(p, data.activeRole))}
@@ -177,8 +184,11 @@ export function MenuPage() {
                   onClick={() => void addToCart(p.id)}
                   disabled={!data.settings.orderingOpen}
                 >
-                  Add
+                  Quick add
                 </button>
+                <Link href={`/menu/${p.id}`} className="btn-secondary text-sm">
+                  Customize
+                </Link>
               </div>
             </article>
           ))}

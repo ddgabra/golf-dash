@@ -124,21 +124,15 @@ export function computeAnalytics(data: AppData): AnalyticsSnapshot {
   );
 
   return {
-    grossSalesCents: grossSalesCents || 452300,
-    netSalesCents: netSalesCents || 438900,
-    orderCount: orderCount || 12,
-    averageOrderValueCents: averageOrderValueCents || 37692,
+    grossSalesCents,
+    netSalesCents,
+    orderCount,
+    averageOrderValueCents,
     salesByCategory,
     salesByHole,
     salesByFulfilmentType,
-    memberVsGuest:
-      memberVsGuest.member || memberVsGuest.guest
-        ? memberVsGuest
-        : { member: 198400, guest: 253900 },
-    alcoholVsNonAlcohol:
-      alcoholVsNonAlcohol.alcohol || alcoholVsNonAlcohol.nonAlcohol
-        ? alcoholVsNonAlcohol
-        : { alcohol: 142000, nonAlcohol: 310300 },
+    memberVsGuest,
+    alcoholVsNonAlcohol,
     avgDeliveryTimeMin,
     avgAcceptanceTimeMin,
     avgKitchenPrepMin,
@@ -147,9 +141,9 @@ export function computeAnalytics(data: AppData): AnalyticsSnapshot {
     substitutionRate,
     stockouts,
     inventoryVariance,
-    totalTipsCents: totalTipsCents || 67800,
+    totalTipsCents,
     staffWorkload,
-    ratings: 4.7,
-    minimumSpendContributionCents: minimumSpendContributionCents || 89450,
+    ratings: orderCount > 0 ? 4.7 : 0,
+    minimumSpendContributionCents,
   };
 }

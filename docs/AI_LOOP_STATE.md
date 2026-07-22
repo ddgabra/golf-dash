@@ -1,9 +1,21 @@
 # AI Loop State
 
-FairwayServe database-free prototype is complete across all 24 phases on the current branch.
+FairwayServe repair loop active on `main`.
 
-Implemented: Next.js foundation, typed local data layer with 14 repositories, 9 demo roles, FairwayServe Demo Club (18 holes), 42-product catalog, cart/checkout with mixed fulfilment, multi-fulfilment orders, staff/kitchen/restaurant apps, assignment engine, inventory, simulated payments, minimum-spend tracking, alcohol workflow, notifications, course management, analytics, demo control centre, responsive design, accessibility features, and automated tests.
+**Completed this session:**
 
-Final validation: all commands pass including production build.
+- Created repair plan (`docs/REPAIR_PLAN.md`) with 180+ granular steps across 14 phases
+- Created `docs/STEP_LOOP_STATE.md`, `docs/STEP_VERIFICATION_LOG.md`, `docs/REGRESSION_LOG.md`
+- Installed Playwright + Chromium; added `playwright.config.ts` and browser test scripts
+- 7 Playwright browser tests passing (smoke + workflows) on 390×844
+- Product detail route `/menu/[id]` with variants, modifiers, quantity, notes, substitution
+- Checkout quantity controls + `checkoutInProgress` duplicate protection
+- Runner staff UI, alcohol refusal dialog, kitchen reject item, manager reassignment
+- Meeting point override bug fixed; member page tied to identity; analytics fake data removed
+- 21 unit tests + 6 workflow tests + production build passing
 
-Continue immediately with the first incomplete requirement. Do not request approval or a PR merge.
+**In progress:** Phase 04 menu step loops (variant display on checkout, remaining menu steps)
+
+**Not started:** Phase 13 responsive viewport audits, Phase 14 full workflow verification loops
+
+Continue immediately with Phase 04 Step 04.11. Do not request approval or a PR merge.

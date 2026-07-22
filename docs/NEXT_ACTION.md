@@ -1,9 +1,18 @@
 # Next Action
 
-Continue immediately with the first incomplete requirement. Do not request approval or a PR merge.
+**Phase:** 04 — Menu (granular)  
+**Step:** 04.11 — Add/verify variant selection  
+**Step-loop:** 1  
+**Defect being repaired:** Verify variant selection displays on checkout cart line after add  
+**Tests to rerun:**
 
-Optional future enhancements (not required for prototype):
+- `npx playwright test tests/playwright/workflows.spec.ts --project=chromium-mobile`
+- `npm run test`
 
-- Playwright browser e2e tests against running dev server
-- PWA offline shell
-- Database-backed API replacing local storage adapters
+**Files involved:**
+
+- `components/pages/ProductDetailPage.tsx`
+- `components/pages/CheckoutPage.tsx`
+- `tests/playwright/workflows.spec.ts`
+
+Continue the current individual-step loop. Do not move to the next step until this step is verified. Do not request approval or a pull-request merge.

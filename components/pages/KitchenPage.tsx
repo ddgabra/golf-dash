@@ -43,6 +43,12 @@ export function KitchenPage() {
     await save(snapshot);
   };
 
+  const reject = async (ticketId: string, itemId: string) => {
+    const snapshot = { ...data };
+    rejectKitchenItem(snapshot, ticketId, itemId);
+    await save(snapshot);
+  };
+
   return (
     <div className="overflow-x-auto">
       <div className="flex min-w-max gap-4">
@@ -102,6 +108,15 @@ export function KitchenPage() {
                         >
                           Contact golfer
                         </button>
+                        {t.items[0] && (
+                          <button
+                            type="button"
+                            className="btn-danger text-xs"
+                            onClick={() => void reject(t.id, t.items[0]!)}
+                          >
+                            Reject item
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>

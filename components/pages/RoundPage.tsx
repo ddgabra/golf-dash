@@ -189,10 +189,7 @@ export function RoundPage() {
                 value={session.currentHole}
                 onChange={(e) => {
                   const hole = Number(e.target.value);
-                  void updateSession({
-                    currentHole: hole,
-                    selectedMeetingPointId: `mp-${hole}`,
-                  });
+                  void updateSession({ currentHole: hole });
                 }}
               >
                 {Array.from({ length: 18 }, (_, i) => i + 1).map((n) => (

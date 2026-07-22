@@ -99,6 +99,17 @@ export function createOrderFromCart(
     return { ok: false, error: "Cart is empty" };
   }
 
+  if (data.checkoutInProgress) {
+    return { ok: false, error: "Checkout already in progress. Please wait." };
+  }
+
+  data.checkoutInProgress = true;
+
+  const fail = (error: string): { ok: false; error: string } => {
+    data.checkoutInProgress = false;
+    return { ok: false, error };
+  };
+
   const activeLines = lines.length ? lines : data.cart.lines;
   const identity = identities.find((i) => i.role === role)!;
   const session = data.sessions.find((s) => s.active);
@@ -112,11 +123,11 @@ export function createOrderFromCart(
   );
 
   if (!alcoholCheck.allowed) {
-    return { ok: false, error: alcoholCheck.reasons.join("; ") };
+    return fail(alcoholCheck.reasons.join("; "));
   }
 
   if (!data.settings.orderingOpen || data.settings.weatherClosed) {
-    return { ok: false, error: "Ordering is currently closed" };
+    return fail("Ordering is currently closed");
   }
 
   const priced = priceOrder(activeLines, data.products, role, data.settings);
@@ -130,7 +141,7 @@ export function createOrderFromCart(
 
   if (payment.status === "failed") {
     pushNotification(data, "payment_failure", role, payment.message);
-    return { ok: false, error: payment.message };
+    return fail(payment.message);
   }
 
   const orderId = generateId("order");
@@ -306,6 +317,9 @@ export function createOrderFromCart(
       });
     }
   }
+
+  data.cart.lines = [];
+  data.checkoutInProgress = false;
 
   pushNotification(data, "order_placed", role, `Order placed: ${orderId}`, orderId);
   return { ok: true, order };

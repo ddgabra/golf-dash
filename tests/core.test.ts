@@ -310,4 +310,31 @@ test("duplicate checkout protection via checkoutLocked", () => {
   );
   assert.equal(r1.ok, true);
   assert.equal(r1.order!.checkoutLocked, true);
+  assert.equal(data.checkoutInProgress, false);
+});
+
+test("checkoutInProgress blocks concurrent checkout", () => {
+  const data = createSeedData();
+  data.checkoutInProgress = true;
+  data.cart.lines = [
+    {
+      id: "l1",
+      itemId: "prod-13",
+      quantity: 1,
+      fulfilmentType: "cart_delivery",
+      deliveryTiming: "immediate",
+      modifiers: [],
+      addOns: [],
+      substitutionPreference: "ask",
+    },
+  ];
+  const result = createOrderFromCart(
+    data,
+    "guest_golfer",
+    data.cart.lines,
+    "Demo Visa ending in 4242",
+    true,
+  );
+  assert.equal(result.ok, false);
+  assert.match(result.error ?? "", /in progress/i);
 });
