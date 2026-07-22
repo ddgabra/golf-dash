@@ -1,0 +1,14 @@
+{
+  "name": "fairwayserve",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && cp index.html dist/index.html",
+    "format": "prettier --check .",
+    "lint": "node scripts/lint.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "validate": "npm run format && npm run typecheck && npm run lint && npm run test"
+  }
+}
