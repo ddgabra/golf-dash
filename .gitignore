@@ -1,7 +1,19 @@
+# Dependencies
 node_modules/
+.next/
+out/
 dist/
-coverage/
+
+# Environment
+.env*.local
+
+# IDE
+.idea/
+.vscode/
+
+# OS
 .DS_Store
-.env
-.env.*
-!.env.example
+
+# Build
+*.tsbuildinfo
+next-env.d.ts
