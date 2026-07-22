@@ -1,13 +1,12 @@
 import type { MenuItem, OrderDraft, OrderSummary, Role } from "./models.js";
+export { createOrder, priceOrder, transitionFulfilment } from "./data.js";
 
 const staffRoles: Role[] = [
   "beverage_cart_staff",
   "runner",
   "kitchen_employee",
   "restaurant_server",
-  "inventory_manager",
   "course_manager",
-  "course_owner",
   "platform_admin",
 ];
 
@@ -32,7 +31,6 @@ export function summarizeOrder(
   let alcoholRequiresPhysicalId = false;
   let kitchenRequired = false;
   const inventoryReservations: OrderSummary["inventoryReservations"] = [];
-
   for (const line of draft.lines) {
     const item = menuItems.find(
       (candidate) =>
@@ -46,23 +44,24 @@ export function summarizeOrder(
       warnings.push(`${item.name} is currently unavailable.`);
     if (line.quantity <= 0)
       warnings.push(`${item.name} must have a positive quantity.`);
-    if (line.quantity > item.stockOnCart)
+    if ("stockOnCart" in item && line.quantity > Number(item.stockOnCart))
       warnings.push(`${item.name} has insufficient cart stock.`);
     subtotalCents += item.priceCents * Math.max(line.quantity, 0);
-    alcoholRequiresPhysicalId ||= item.requiresIdCheck;
-    kitchenRequired ||= item.requiresKitchen;
+    alcoholRequiresPhysicalId ||=
+      item.alcohol ||
+      Boolean("requiresIdCheck" in item && item.requiresIdCheck);
+    kitchenRequired ||=
+      item.prepMinutes > 5 ||
+      Boolean("requiresKitchen" in item && item.requiresKitchen);
     inventoryReservations.push({
       itemId: item.id,
       quantity: Math.max(line.quantity, 0),
     });
   }
-
-  if (draft.paymentMode === "member_account" && draft.role !== "club_member") {
+  if (draft.paymentMode === "member_account" && draft.role !== "club_member")
     warnings.push("Only club members may charge orders to a member account.");
-  }
   if (draft.lines.length === 0)
     warnings.push("Add at least one item before checkout.");
-
   return {
     status: warnings.length ? "draft" : "submitted",
     subtotalCents,
