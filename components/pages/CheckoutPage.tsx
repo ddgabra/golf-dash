@@ -53,8 +53,7 @@ export function CheckoutPage() {
     if (processing || data.checkoutInProgress) return;
     setProcessing(true);
     setError(null);
-    const snapshot = { ...data, checkoutInProgress: true };
-    await save(snapshot);
+    const snapshot = { ...data };
     const result = createOrderFromCart(
       snapshot,
       data.activeRole,
@@ -63,8 +62,7 @@ export function CheckoutPage() {
       alcoholConfirmed,
     );
     if (!result.ok) {
-      snapshot.checkoutInProgress = false;
-      await save(snapshot);
+      await save({ ...snapshot, checkoutInProgress: false });
       setError(result.error ?? "Checkout failed");
       setProcessing(false);
       return;
@@ -104,7 +102,8 @@ export function CheckoutPage() {
                   <div key={line.id} className="border-t border-fairway-100 py-3">
                     <div className="flex justify-between font-semibold">
                       <span>
-                        {product.name} × {line.quantity}
+                        {product.name}
+                        {line.variant ? ` (${line.variant})` : ""} × {line.quantity}
                       </span>
                       <div className="flex items-center gap-2">
                         <button

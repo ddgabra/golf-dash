@@ -27,9 +27,8 @@ test("runner role sees staff tasks", async ({ page }) => {
 
 test("meeting point is not overwritten when changing hole", async ({ page }) => {
   await page.getByText("Round setup options").click();
-  await page.getByLabel("Meeting point").selectOption({ index: 2 });
-  const meetingBefore = await page.getByLabel("Meeting point").inputValue();
+  await page.getByLabel("Meeting point").selectOption("mp-10");
+  await expect(page.getByLabel("Meeting point")).toHaveValue("mp-10");
   await page.getByLabel("Current hole").selectOption("5");
-  const meetingAfter = await page.getByLabel("Meeting point").inputValue();
-  expect(meetingAfter).toBe(meetingBefore);
+  await expect(page.getByLabel("Meeting point")).toHaveValue("mp-10");
 });

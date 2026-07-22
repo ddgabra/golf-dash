@@ -5,10 +5,12 @@
 **Step-loop:** 1  
 **Defect being repaired:** Verify variant selection displays on checkout cart line after add  
 **Tests to rerun:**
+
 - `npx playwright test tests/playwright/workflows.spec.ts --project=chromium-mobile`
 - `npm run test`
 
 **Files involved:**
+
 - `components/pages/ProductDetailPage.tsx`
 - `components/pages/CheckoutPage.tsx`
 - `tests/playwright/workflows.spec.ts`
